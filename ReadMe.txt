@@ -1,3 +1,2 @@
-This is a Telegram bot
+This is a Telegram bot (username - '@Snyazybot'). It acts like a to do list: you can write down a list of tasks to do and the bot will store it using SQLite. After a task has been done you should send message '/done' and keyboard with your tasks will appear. To remove a task from the list you can simply chose it on the keyboard. To get help write '/start' to the bot.
 Telegram is the Russian messenger which was created by Pavel Durov
-username of this bot is ShnyaznyBot

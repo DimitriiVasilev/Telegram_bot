@@ -6,7 +6,7 @@ from dbhelper import DBHelper
 
 db = DBHelper()
 
-TOKEN = open('TOKEN').read()
+TOKEN = open('TOKEN').read().rstrip()  # bot's token
 URL = f'https://api.telegram.org/bot{TOKEN}/'
 
 
@@ -53,9 +53,10 @@ def handle_updates(updates):
             continue
         elif text == "/start":
             send_message(
+                chat,
                 "Welcome to your personal To Do list. Send any text to me and I'll store it as an item. "
                 "Send /done to remove items",
-                chat)
+                )
         elif text.startswith("/"):
             continue
         elif text in items:
@@ -91,8 +92,8 @@ def show_messages(updates):
 
 def main():
     last_update_id = None
-    db.setup()
     while True:
+        db.setup()
         updates = get_updates(last_update_id)
         if len(updates['result']):
             last_update_id = get_last_update_id(updates) + 1
