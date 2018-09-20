@@ -3,7 +3,7 @@ import os
 
 
 class DBHelper:
-    def __init__(self, dbname="todo_list", username="todo_list", password='todolist'):
+    def __init__(self):
         DATABASE_URL = os.environ['DATABASE_URL']
         self.connection = psycopg2.connect(DATABASE_URL, sslmode='require')
         self.cur = self.connection.cursor()
