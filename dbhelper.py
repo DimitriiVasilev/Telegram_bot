@@ -1,29 +1,43 @@
-import sqlite3
+import psycopg2
 
 
 class DBHelper:
-    def __init__(self, dbname="todo.sqlite"):
-        self.dbname = dbname
-        self.conn = sqlite3.connect(dbname)
+    def __init__(self, dbname="todo_list", username="todo_list", password='todolist'):
+        self.connection = psycopg2.connect(
+            host='127.0.0.1',
+            database=dbname,
+            port='',
+            user=username,
+            password=password
+        )
+        self.cur = self.connection.cursor()
 
     def setup(self):
-        stmt = "CREATE TABLE IF NOT EXISTS items (description text, owner text)"
-        self.conn.execute(stmt)
-        self.conn.commit()
+        tblstmt = "CREATE TABLE IF NOT EXISTS items (description text, owner text);"
+        itemidx = "CREATE INDEX IF NOT EXISTS itemIndex ON items (description);"
+        ownidx = "CREATE INDEX IF NOT EXISTS ownIndex ON items (owner);"
+        self.cur.execute(tblstmt)
+        self.cur.execute(itemidx)
+        self.cur.execute(ownidx)
+        self.connection.commit()
 
     def add_item(self, item_text, owner):
-        stmt = "INSERT INTO items (description, owner) VALUES (?, ?)"
+        owner = str(owner)
+        stmt = "INSERT INTO items (description, owner) VALUES (%s, %s);"
         args = (item_text, owner)
-        self.conn.execute(stmt, args)
-        self.conn.commit()
+        self.cur.execute(stmt, args)
+        self.connection.commit()
 
     def delete_item(self, item_text, owner):
-        stmt = "DELETE FROM items WHERE description = (?) AND owner = (?)"
+        owner = str(owner)
+        stmt = "DELETE FROM items WHERE description = (%s) AND owner = (%s);"
         args = (item_text, owner)
-        self.conn.execute(stmt, args)
-        self.conn.commit()
+        self.cur.execute(stmt, args)
+        self.connection.commit()
 
     def get_items(self, owner):
-        stmt = "SELECT description FROM items WHERE owner = (?)"
-        args = (owner, )
-        return [x[0] for x in self.conn.execute(stmt, args)]
+        stmt = "SELECT description FROM items WHERE owner = (%s);"
+        args = (str(owner), )
+        self.cur.execute(stmt, args)
+        items = self.cur.fetchall()
+        return [x[0] for x in items]
