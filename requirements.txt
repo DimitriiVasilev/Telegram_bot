@@ -1,7 +1,1 @@
-get==1.0.3
-post==1.0.2
-psycopg2==2.7.5
-psycopg2-binary==2.7.5
-public==1.0.3
-query-string==1.0.2
-request==1.0.2
+requests==2.18.4
