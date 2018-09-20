@@ -44,7 +44,10 @@ def send_message(chat_id, text, reply_markup=None):
 
 def handle_updates(updates):
     for update in updates["result"]:
-        text = update["message"]["text"]
+        try:
+            text = update["message"]["text"]
+        except KeyError:
+            text = '<it was not text>'
         chat = update["message"]["chat"]["id"]
         items = db.get_items(chat)
         if text == "/done":
@@ -82,8 +85,14 @@ def build_keyboard(items):
 
 def show_messages(updates):
     for update in updates['result']:
-        message = update['message']['text']
-        user = update['message']['chat']['username']
+        try:
+            message = update["message"]["text"]
+        except KeyError:
+            message = '<it was not text>'
+        try:
+            user = update['message']['chat']['username']
+        except KeyError:
+            user = '<chat_id %s>' % update['message']['chat']['id']
         try:
             print(f'got {message} from {user}')
         except Exception as e:
