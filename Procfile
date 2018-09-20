@@ -1,1 +1,1 @@
-web: python3 todobot.py
+worker: python3 todobot.py
