@@ -1,15 +1,11 @@
 import psycopg2
+import os
 
 
 class DBHelper:
     def __init__(self, dbname="todo_list", username="todo_list", password='todolist'):
-        self.connection = psycopg2.connect(
-            host='127.0.0.1',
-            database=dbname,
-            port='',
-            user=username,
-            password=password
-        )
+        DATABASE_URL = os.environ['DATABASE_URL']
+        self.connection = psycopg2.connect(DATABASE_URL, sslmode='require')
         self.cur = self.connection.cursor()
 
     def setup(self):
