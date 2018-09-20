@@ -16,7 +16,6 @@ keyring==10.6.0
 keyrings.alt==3.0
 numpy==1.13.3
 olefile==0.45.1
-PAM==0.4.2
 Pillow==5.1.0
 post==1.0.2
 psycopg2==2.7.5
